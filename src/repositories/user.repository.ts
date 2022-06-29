@@ -7,6 +7,7 @@ export class UserRepository {
     constructor() {
         this.repository = AppDataSource.getRepository(User);
     }
+    
 
     public async insert() {}
 
