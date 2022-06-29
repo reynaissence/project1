@@ -13,10 +13,15 @@ export class UserRepository {
 
     public async update() {}
 
-    public async findById(userId: string) {
+    public async findById(userId: number) {
         const response = await this.repository.findOneBy({id: userId});
         return userId;
     }
 
     public async findAll() {}
+
+    public async findByUsername(user: string) : Promise <User> {
+        const u = await this.repository.findOneBy({ username: user })
+        return u
+    }
 }

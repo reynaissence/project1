@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-chrome",
+            "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "runtimeExecutable": "npx",
+            // "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+            "args": ["ts-node","src/index.ts"],
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**", "node_modules/**"
+            ],
+            
         }
     ]
 }
