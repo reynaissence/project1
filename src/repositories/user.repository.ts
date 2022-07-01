@@ -1,15 +1,18 @@
-import { AppDataSource } from "..";
+import { Repository } from "typeorm";
+import { AppDataSource } from "../data-source";
 import { User } from "../models/User";
 
 export class UserRepository {
-    protected repository: any;
+    protected repository: Repository<User>;
 
     constructor() {
         this.repository = AppDataSource.getRepository(User);
     }
     
 
-    public async insert() {}
+    public async insert(user: User) {
+        await this.repository.save(user);
+    }
 
     public async update() {}
 
@@ -20,8 +23,7 @@ export class UserRepository {
 
     public async findAll() {}
 
-    public async findByUsername(user: string) : Promise <User> {
-        const u = await this.repository.findOneBy({ username: user })
-        return u
+    public async findByUsername(user: string) : Promise <User | null> {
+         return await this.repository.findOneBy({username: user});
     }
 }
