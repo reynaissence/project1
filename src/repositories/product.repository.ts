@@ -1,18 +1,21 @@
-import { AppDataSource } from "..";
+import { Repository } from "typeorm";
+import { AppDataSource } from "../data-source";
 import { Product } from "../models/Product";
 
 export class ProductRepository {
-    protected repository: any;
+    protected repository: Repository<Product>;
 
     constructor() {
         this.repository = AppDataSource.getRepository(Product);
     }
 
-    public async insert() {}
+    public async insert(product: Product) {
+        return await this.repository.save(product);
+    }
 
     public async update() {}
 
-    public async findById(productId: string) {
+    public async findById(productId: number) {
         const response = await this.repository.findOneBy({id: productId});
         return productId;
     }

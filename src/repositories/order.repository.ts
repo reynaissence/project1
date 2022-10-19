@@ -1,4 +1,4 @@
-import { AppDataSource } from "..";
+import { AppDataSource } from "../data-source";
 import { Order } from "../models/Order";
 
 export class OrderRepository {

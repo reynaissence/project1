@@ -4,13 +4,17 @@ import { Application, Request, Response } from "express";
 import { UserRepository } from "./repositories/user.repository";
 import * as basicAuth from 'express-basic-auth';
 import { AppDataSource } from "./data-source"
+import { ProductRepository } from "./repositories/product.repository";
+import { Product } from "./models/Product";
+import { v4 as uuidv4 } from 'uuid';
 
 AppDataSource.initialize().then(async () => {
     
     const app: Application = express();
     const port = 3000;
     const ioc = {
-        userRepository : new UserRepository()
+        userRepository : new UserRepository(),
+        productRepository : new ProductRepository()
     }
 
     // Body parsing Middleware
@@ -38,15 +42,40 @@ AppDataSource.initialize().then(async () => {
         });
     })
 
-    app.get("/call3", async (req: Request, res: Response): Promise<Response> => {
+    app.get("/orders", async (req: Request, res: Response): Promise<Response> => {
         return res.status(200).send({
-            message: "Messaggio3!",
+            message: "Crea un prodotto!",
         });
     })
 
+    app.get("/products", async (req: Request, res: Response): Promise<Response> => {
+        return res.status(200).send({
+            message: "Inserisci prodotto!",
+        });
+    })
 
+    //INSERT PRODUCTS 
 
-    app.get("/user/:userId", async (req: Request, res: Response): Promise<Response> => {
+    app.post("/products", async (req: Request, res: Response) => {
+       
+        
+        if (!req.body.name) {
+            res.status(400).send({ message: 'Serve un nome'})
+        }
+
+        const product = { 
+            name : req.body.name,
+            description : req.body.description,
+            guid : uuidv4(),
+            price : req.body.price
+        } as Product;
+
+        const newProduct = ioc.productRepository.insert( product )
+        
+        res.status(201).send(newProduct)
+    })
+
+    app.get("/users/:userId", async (req: Request, res: Response): Promise<Response> => {
         return res.status(200).send({
             message: req.params.userId,
         });
